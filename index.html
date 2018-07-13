@@ -2,6 +2,10 @@
   <head>
     <title>Snake AI - A neural network and neuro-evolution experiment</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lib/graph.css">
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="http://ialab.it.monash.edu/webcola/cola.v3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   </head>
   <body>
     <div id="wrapper">
@@ -9,6 +13,16 @@
       <div id="status">
         <p>generation<br><span id="generation">0</span></p>
         <p>highest score<br><span id="highest-score">0</span></p>
+      </div>
+      <div id="nodegraph">
+        <div id="bestNetworkGraph">
+          <p>Best Network Overall: <span class="bestNetworkLabel">0</span></p>
+          <svg class="bestNetwork"></svg>
+        </div>
+        <div id="bestNetworkGraphCurrentGeneration">
+          <p>Best Network This Generation: <span class="bestNetworkCurrentGenLabel">0</span></p>
+          <svg class="bestNetworkCurrentGen"></svg>
+        </div>
       </div>
     </div>
 
@@ -21,6 +35,7 @@
     <script src="src/food.js"></script>
     <script src="src/game.js"></script>
     <script src="src/runner.js"></script>
+    <script src="lib/graph.js"></script>
     <script src="src/main.js"></script>
   </body>
 </html>

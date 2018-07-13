@@ -49,6 +49,10 @@ class Game {
         })
       }
 
+      p.mousePressed = () => {
+        graphNetwork(game.snake.brain, '.clickedNetwork', 0)
+      }
+
       p.draw = () => {
         if (['IDLE', 'GAME_OVER'].indexOf(game.status) !== -1) {
           p.background('#EEE')

@@ -39,6 +39,7 @@ class Runner {
 
     this.onEndGeneration({
       generation: this.neat.generation,
+      fittest: this.neat.getFittest(),
       max: this.neat.getFittest().score,
       avg: Math.round(this.neat.getAverage()),
       min: this.neat.population[this.neat.popsize - 1].score

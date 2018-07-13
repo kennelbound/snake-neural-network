@@ -4,11 +4,11 @@ const Config = neataptic.Config
 Config.warnings = false
 
 const neat = new Neat(6, 2, null, {
-    popsize: GAMES,
-    elitism: ELITISM,
-    mutationRate: MUTATION_RATE,
-    mutationAmount: MUTATION_AMOUNT
-  }
+  popsize: GAMES,
+  elitism: ELITISM,
+  mutationRate: MUTATION_RATE,
+  mutationAmount: MUTATION_AMOUNT
+}
 )
 
 const chartData = {
@@ -37,12 +37,21 @@ const chart = new Chart('#chart', {
 })
 
 let highestScore = 0
+let bestNetwork = null;
+let bestNetworkGeneration = 0;
+
+function graphNetwork(network, destination, label) {
+  setTimeout(() => {
+    drawGraph(network.graph($(destination).width() / 2, $(destination).height() / 2), destination);
+    $(destination + "Label").html(label);
+  }, 100);
+}
 
 const runner = new Runner({
   neat,
   games: GAMES,
   gameSize: GAME_SIZE,
-  gameUnit:  GAME_UNIT,
+  gameUnit: GAME_UNIT,
   frameRate: FRAME_RATE,
   maxTurns: MAX_TURNS,
   lowestScoreAllowed: LOWEST_SCORE_ALLOWED,
@@ -51,7 +60,7 @@ const runner = new Runner({
     movedAgainstFood: POINTS_MOVED_AGAINST_FOOD,
     ateFood: POINTS_ATE_FOOD
   },
-  onEndGeneration: ({generation, max, avg, min}) => {
+  onEndGeneration: ({ generation, fittest, max, avg, min }) => {
     chartData.labels.push(generation.toString())
     chartData.datasets[0].values.push(max)
     chartData.datasets[1].values.push(avg)
@@ -66,6 +75,16 @@ const runner = new Runner({
     if (max > highestScore) {
       highestScore = max
     }
+
+
+    if (bestNetwork) console.log("Fittest: " + fittest.score + ", Best: " + bestNetwork.score);
+    if (!bestNetwork || fittest.score > bestNetwork.score) {
+      bestNetwork = neataptic.Network.fromJSON(fittest.toJSON());
+      bestNetwork.score = fittest.score;
+      bestNetworkGeneration = generation;
+    }
+    graphNetwork(bestNetwork, ".bestNetwork", bestNetworkGeneration);
+    graphNetwork(fittest, ".bestNetworkCurrentGen", generation);
 
     document.getElementById('generation').innerHTML = generation
     document.getElementById('highest-score').innerHTML = highestScore
